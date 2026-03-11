@@ -3,7 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarDays, MapPin, MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getEventBySlug } from "@/data/events";
+import { getEventBySlug, events } from "@/data/events";
+
+export async function generateStaticParams() {
+  return events.map((event) => ({
+    slug: event.slug,
+  }));
+}
 
 interface EventDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -18,13 +24,13 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-10">
+    <main className="min-h-screen bg-background px-4 py-10">
       <div className="mx-auto max-w-4xl">
-        <Link href="/events" className="inline-flex items-center text-sm text-slate-600 hover:text-slate-900">
+        <Link href="/events" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="mr-2 size-4" /> Back to events
         </Link>
 
-        <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="mt-5 overflow-hidden rounded-2xl border bg-card shadow-sm">
           <Image
             src={event.poster}
             alt={event.name}
@@ -34,10 +40,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           />
 
           <div className="p-6 md:p-8">
-            <h1 className="text-3xl font-bold tracking-tight">{event.name}</h1>
-            <p className="text-slate-600 mt-3">{event.description}</p>
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">{event.name}</h1>
+            <p className="text-muted-foreground mt-3">{event.description}</p>
 
-            <div className="mt-5 space-y-2 text-sm text-slate-700">
+            <div className="mt-5 space-y-2 text-sm text-muted-foreground">
               <p className="flex items-center">
                 <CalendarDays className="mr-2 size-4" /> {event.date}
               </p>
