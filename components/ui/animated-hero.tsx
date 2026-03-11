@@ -31,7 +31,7 @@ function Hero({ words, className, onComplete }: AnimatedHeroProps) {
       } else {
         setTitleNumber(titleNumber + 1);
       }
-    }, 1100);
+    }, 900);
     return () => clearTimeout(timeoutId);
   }, [titleNumber, titles, onComplete, hasCompleted]);
 
@@ -40,7 +40,7 @@ function Hero({ words, className, onComplete }: AnimatedHeroProps) {
       className={className ?? "w-full relative"}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 0.8 }}
     >
       {/* Floating Accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -80,7 +80,7 @@ function Hero({ words, className, onComplete }: AnimatedHeroProps) {
             <motion.span
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="block mb-2"
             >
               Mindkraft

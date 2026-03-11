@@ -18,13 +18,8 @@ export default function HomePage() {
     setRedirectStarted(true);
     setTimeout(() => {
       router.push("/events");
-    }, 1000); // 1 second delay after "the future"
+    }, 800); // 0.8 second delay after "the future"
   }, [router]);
-
-  // Remove the old interval effect
-  useEffect(() => {
-    // No-op, handled by Hero onComplete
-  }, []);
 
   const progress = redirectStarted ? 100 : 0; // Simplified for now, or could keep it dynamic
 
