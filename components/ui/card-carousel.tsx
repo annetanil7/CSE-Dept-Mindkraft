@@ -148,45 +148,41 @@ export const CardCarousel: React.FC<CarouselProps> = ({
                   className="object-contain transition-opacity duration-1000"
                 />
 
-                {/* Detail Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-10 text-white">
-                  <div className="space-y-5 translate-y-8 group-hover:translate-y-0 transition-transform duration-700 ease-out">
+                {/* Detail Overlay - Always visible on mobile, hover on desktop */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent lg:opacity-0 lg:group-hover:opacity-100 opacity-100 transition-opacity duration-700 flex flex-col justify-end p-6 md:p-10 text-white">
+                  <div className="space-y-4 lg:translate-y-8 lg:group-hover:translate-y-0 transition-transform duration-700 ease-out">
                     <div className="flex items-center gap-2">
                       <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-blue-600/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg">
                         Featured Event
                       </span>
                     </div>
 
-                    <h3 className="text-4xl font-black tracking-tighter leading-none italic uppercase">
+                    <h3 className="text-2xl md:text-4xl font-black tracking-tighter leading-none italic uppercase">
                       {event.name}
                     </h3>
-                    <p className="text-sm text-slate-300 leading-relaxed font-medium max-w-sm line-clamp-3">
+                    <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium max-w-sm line-clamp-2 md:line-clamp-3">
                       {event.description}
                     </p>
 
-                    <div className="flex flex-col gap-3 py-2 text-[11px] font-bold uppercase tracking-widest text-slate-400">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-white/5 backdrop-blur-sm">
-                          <Calendar className="size-4 text-blue-400" />
-                        </div>
+                    <div className="flex flex-row flex-wrap gap-4 py-1 text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="size-3 md:size-4 text-blue-400" />
                         {event.date}
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-white/5 backdrop-blur-sm">
-                          <MapPin className="size-4 text-blue-400" />
-                        </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="size-3 md:size-4 text-blue-400" />
                         {event.venue}
                       </div>
                     </div>
 
-                    <div className="pt-4">
+                    <div className="pt-2 md:pt-4">
                       <Link
                         href={event.registerUrl}
                         target="_blank"
-                        className="group/btn inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full text-xs font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-xl"
+                        className="group/btn inline-flex w-full md:w-auto items-center justify-center gap-3 bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300 shadow-xl"
                       >
                         Secure Your Spot
-                        <ArrowUpRight className="size-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
+                        <ArrowUpRight className="size-3 md:size-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
                       </Link>
                     </div>
                   </div>

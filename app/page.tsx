@@ -41,7 +41,7 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
           className="mt-16 flex flex-col items-center gap-10"
         >
           {/* Tech Countdown Section */}
