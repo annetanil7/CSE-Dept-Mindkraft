@@ -28,7 +28,7 @@ export function ModeToggle() {
             whileHover={{ scale: 1.1, backgroundColor: isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)" }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setTheme(isDark ? "light" : "dark")}
-            className="fixed top-8 right-8 z-[100] flex size-12 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl transition-all focus:outline-none dark:bg-black/20 dark:border-white/10"
+            className="fixed top-32 right-8 z-[101] flex size-12 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl transition-all focus:outline-none dark:bg-black/20 dark:border-white/10"
             aria-label="Toggle theme"
         >
             <AnimatePresence mode="wait">

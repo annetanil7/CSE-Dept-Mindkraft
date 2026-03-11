@@ -7,6 +7,7 @@ import { ArrowRight, Clock } from "lucide-react";
 import { Hero } from "@/components/ui/animated-hero";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import { BackgroundPaths } from "@/components/ui/background-paths";
 
 const TOTAL_SECONDS = 6;
 
@@ -25,6 +26,7 @@ export default function HomePage() {
 
   return (
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background selection:bg-blue-500/30 selection:text-blue-200">
+      <BackgroundPaths />
       <BackgroundBeams />
       <ModeToggle />
 

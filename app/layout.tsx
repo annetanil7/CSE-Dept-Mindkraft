@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { BrandingHeader } from "@/components/ui/branding-header";
 
 export default function RootLayout({
   children,
@@ -22,6 +23,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <BrandingHeader />
           {children}
         </ThemeProvider>
       </body>
