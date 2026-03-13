@@ -1,0 +1,20 @@
+<svg width="900" height="1286" viewBox="0 0 900 1286" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="900" y2="1286" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A1A1E"/>
+      <stop offset="1" stop-color="#3F2E26"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(450 500) rotate(90) scale(440 340)">
+      <stop stop-color="#E2B48E" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#E2B48E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1286" fill="url(#bg)"/>
+  <rect width="900" height="1286" fill="url(#glow)"/>
+  <rect x="72" y="86" width="756" height="1114" rx="36" stroke="white" stroke-opacity="0.22" stroke-width="2"/>
+  <text x="450" y="226" text-anchor="middle" fill="#F0D8C2" fill-opacity="0.86" font-size="40" font-family="Inter, Arial, sans-serif" letter-spacing="6">MINDKRAFT 2026</text>
+  <text x="450" y="586" text-anchor="middle" fill="white" font-size="88" font-weight="700" font-family="Inter, Arial, sans-serif">PROFILE</text>
+  <text x="450" y="684" text-anchor="middle" fill="white" font-size="88" font-weight="700" font-family="Inter, Arial, sans-serif">FORGE</text>
+  <text x="450" y="772" text-anchor="middle" fill="#F5DDC8" fill-opacity="0.92" font-size="34" font-family="Inter, Arial, sans-serif">Build your brand. Own your story.</text>
+  <text x="450" y="1120" text-anchor="middle" fill="#F0D8C2" fill-opacity="0.8" font-size="28" font-family="Inter, Arial, sans-serif">CSE Department</text>
+</svg>

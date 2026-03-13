@@ -1,0 +1,34 @@
+<svg width="768" height="768" viewBox="0 0 768 768" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#F4F4F5">
+    <path d="M384 60l20 0 8 78-36 0 8-78Z"/>
+    <path d="M484 83l19 5-12 78-34-9 27-74Z"/>
+    <path d="M576 126l16 11-32 72-29-19 45-64Z"/>
+    <path d="M649 194l12 16-49 61-21-26 58-51Z"/>
+    <path d="M697 281l6 19-64 44-11-34 69-29Z"/>
+    <path d="M714 379l-1 20-78 7 1-36 78 9Z"/>
+    <path d="M696 477l-7 19-72-26 13-33 66 40Z"/>
+    <path d="M646 564l-12 16-61-48 22-25 51 57Z"/>
+    <path d="M572 631l-17 11-44-64 30-18 31 71Z"/>
+    <path d="M480 675l-19 5-20-76 35-8 4 79Z"/>
+    <path d="M384 690h-20l-8-78h36l-8 78Z"/>
+    <path d="M288 675l-19-5 12-77 35 9-28 73Z"/>
+    <path d="M195 632l-16-11 33-72 29 19-46 64Z"/>
+    <path d="M122 564l-12-16 49-61 21 26-58 51Z"/>
+    <path d="M72 476l-6-19 64-44 11 34-69 29Z"/>
+    <path d="M55 379l1-20 78-7-1 36-78-9Z"/>
+    <path d="M73 282l7-19 72 26-13 33-66-40Z"/>
+    <path d="M122 194l12-16 61 48-22 25-51-57Z"/>
+    <path d="M196 126l17-11 44 64-30 18-31-71Z"/>
+    <path d="M288 83l19-5 20 76-35 8-4-79Z"/>
+  </g>
+  <circle cx="384" cy="384" r="258" stroke="#F4F4F5" stroke-width="12"/>
+  <ellipse cx="384" cy="384" rx="170" ry="258" stroke="#F4F4F5" stroke-width="8"/>
+  <ellipse cx="384" cy="384" rx="88" ry="258" stroke="#F4F4F5" stroke-width="7"/>
+  <ellipse cx="384" cy="384" rx="246" ry="88" stroke="#F4F4F5" stroke-width="8"/>
+  <ellipse cx="384" cy="384" rx="246" ry="160" stroke="#F4F4F5" stroke-width="7"/>
+  <ellipse cx="384" cy="384" rx="246" ry="228" stroke="#F4F4F5" stroke-width="6"/>
+  <path d="M150 445C173 445 183 295 202 295C221 295 230 500 248 500C267 500 274 349 292 349C311 349 320 428 338 428C355 428 365 236 384 236C403 236 409 485 429 485C447 485 458 308 476 308C496 308 504 420 523 420C542 420 552 332 569 332C585 332 596 445 618 445" stroke="#F4F4F5" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(448 116) rotate(18)">
+    <text x="0" y="0" fill="#F4F4F5" font-size="34" font-weight="800" font-family="Arial, Helvetica, sans-serif" letter-spacing="2">MINDKRAFT</text>
+  </g>
+</svg>

@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const nextConfig: NextConfig = {
   output: "export",
-  basePath: "/CSE-Dept-Mindkraft",
-  assetPrefix: "/CSE-Dept-Mindkraft",
+  basePath: isProduction ? "/CSE-Dept-Mindkraft" : undefined,
+  assetPrefix: isProduction ? "/CSE-Dept-Mindkraft" : undefined,
   images: {
     unoptimized: true,
     remotePatterns: [

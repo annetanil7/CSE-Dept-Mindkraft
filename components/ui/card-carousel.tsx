@@ -3,14 +3,14 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { MapPin, Calendar, ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import "swiper/css";
-import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Autoplay, EffectCoverflow, Pagination, Navigation } from "swiper/modules";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { EventItem } from "@/data/events";
 
 interface CarouselProps {
@@ -20,198 +20,288 @@ interface CarouselProps {
   showNavigation?: boolean;
 }
 
+type EventTheme = {
+  chip: string;
+  icon: string;
+  button: string;
+  glow: string;
+  card: string;
+};
+
+const eventThemes: Record<string, EventTheme> = {
+  "iot-inferno": {
+    chip: "border-cyan-300/35 bg-cyan-300/10 text-cyan-100",
+    icon: "text-cyan-200",
+    button: "border-cyan-200/40 bg-cyan-100 text-cyan-950 hover:bg-cyan-200",
+    glow: "from-cyan-400/30 via-cyan-200/10 to-transparent",
+    card: "border-cyan-300/25",
+  },
+  "crypto-crime": {
+    chip: "border-fuchsia-300/35 bg-fuchsia-300/10 text-fuchsia-100",
+    icon: "text-fuchsia-200",
+    button: "border-fuchsia-200/40 bg-fuchsia-100 text-fuchsia-950 hover:bg-fuchsia-200",
+    glow: "from-fuchsia-400/30 via-fuchsia-200/10 to-transparent",
+    card: "border-fuchsia-300/25",
+  },
+  "bot-a-thon": {
+    chip: "border-emerald-300/35 bg-emerald-300/10 text-emerald-100",
+    icon: "text-emerald-200",
+    button: "border-emerald-200/40 bg-emerald-100 text-emerald-950 hover:bg-emerald-200",
+    glow: "from-emerald-400/30 via-emerald-200/10 to-transparent",
+    card: "border-emerald-300/25",
+  },
+  "anime-ai-awakening": {
+    chip: "border-rose-300/35 bg-rose-300/10 text-rose-100",
+    icon: "text-rose-200",
+    button: "border-rose-200/40 bg-rose-100 text-rose-950 hover:bg-rose-200",
+    glow: "from-rose-400/30 via-rose-200/10 to-transparent",
+    card: "border-rose-300/25",
+  },
+  "hashes-over-roses-3": {
+    chip: "border-amber-300/35 bg-amber-300/10 text-amber-100",
+    icon: "text-amber-200",
+    button: "border-amber-200/40 bg-amber-100 text-amber-950 hover:bg-amber-200",
+    glow: "from-amber-400/30 via-amber-200/10 to-transparent",
+    card: "border-amber-300/25",
+  },
+};
+
+const defaultTheme: EventTheme = {
+  chip: "border-white/25 bg-white/10 text-white/90",
+  icon: "text-white/80",
+  button: "border-white/20 bg-white text-black hover:bg-zinc-200",
+  glow: "from-white/30 via-white/10 to-transparent",
+  card: "border-white/20",
+};
+
 export const CardCarousel: React.FC<CarouselProps> = ({
   events,
-  autoplayDelay = 4000,
+  autoplayDelay = 3800,
   showPagination = true,
   showNavigation = true,
 }) => {
+  const [activeIndex, setActiveIndex] = React.useState(0);
+
+  if (!events.length) {
+    return null;
+  }
+
+  const safeIndex = ((activeIndex % events.length) + events.length) % events.length;
+  const activeEvent = events[safeIndex];
+  const activeTheme = eventThemes[activeEvent.slug] ?? defaultTheme;
+  const progress = ((safeIndex + 1) / events.length) * 100;
+
   return (
-    <div className="w-full relative py-4 overflow-visible px-4">
+    <section className="relative mx-auto w-full max-w-6xl px-3 pb-6 pt-4 sm:px-4 lg:px-6">
       <style>{`
-        .swiper {
+        .mindkraft-poster-swiper {
           width: 100%;
-          padding-top: 40px;
-          padding-bottom: 60px;
-          overflow: visible !important;
+          height: 100%;
+          padding-bottom: 26px;
         }
 
-        .swiper-slide {
-          background-position: center;
-          background-size: cover;
-          width: clamp(280px, 35vw, 450px) !important;
-          height: clamp(500px, 62vw, 800px) !important; /* 9:16 Ratio */
-          transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-          filter: blur(14px) brightness(0.4);
-          transform: scale(0.8) translateY(20px);
-          border-radius: 2.5rem;
-          opacity: 0.3;
+        .mindkraft-poster-swiper .swiper-slide {
+          width: 100% !important;
+          height: 100% !important;
         }
 
-        .swiper-slide-active {
-          filter: blur(0px) brightness(1);
-          transform: scale(1) translateY(0);
-          box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(59, 130, 246, 0.1);
-          opacity: 1;
-          z-index: 10;
+        .mindkraft-poster-swiper .swiper-pagination {
+          bottom: 2px !important;
         }
 
-        .swiper-slide-prev, .swiper-slide-next {
-          opacity: 0.6;
-          filter: blur(6px) brightness(0.6);
-          transform: scale(0.9) translateY(10px);
-        }
-
-        .swiper-pagination-bullet {
-          background: rgba(255, 255, 255, 0.2);
-          opacity: 0.5;
+        .mindkraft-poster-swiper .swiper-pagination-bullet {
+          background: rgba(255, 255, 255, 0.3);
+          opacity: 0.55;
           width: 8px;
           height: 8px;
-          margin: 0 6px !important;
-          transition: all 0.3s ease;
+          margin: 0 5px !important;
+          transition: all 0.28s ease;
         }
 
-        .swiper-pagination-bullet-active {
-          background: #3b82f6;
+        .mindkraft-poster-swiper .swiper-pagination-bullet-active {
+          background: #ffffff;
           opacity: 1;
-          width: 32px;
-          border-radius: 4px;
+          width: 20px;
+          border-radius: 999px;
         }
 
-        .nav-btn {
+        .mindkraft-nav-btn {
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          z-index: 20;
-          width: 60px;
-          height: 60px;
-          background: rgba(255, 255, 255, 0.03);
-          backdrop-filter: blur(20px);
-          border-radius: 50%;
+          z-index: 30;
+          width: 34px;
+          height: 34px;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border-radius: 999px;
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: #fff;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
           cursor: pointer;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          border: 1px solid rgba(255,255,255,0.05);
-          color: white;
+          transition: transform 0.2s ease, background 0.2s ease;
         }
 
-        .nav-btn:hover {
-          background: rgba(255, 255, 255, 0.08);
-          transform: translateY(-50%) scale(1.15);
-          border-color: rgba(59, 130, 246, 0.3);
-          box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 20px rgba(37,99,235,0.2);
+        .mindkraft-nav-btn:hover {
+          transform: translateY(-50%) scale(1.07);
+          background: rgba(255, 255, 255, 0.16);
         }
 
-        .nav-btn.swiper-button-disabled {
+        .mindkraft-nav-btn.swiper-button-disabled {
           opacity: 0;
           pointer-events: none;
         }
+
+        @media (min-width: 1024px) {
+          .mindkraft-nav-btn {
+            width: 40px;
+            height: 40px;
+          }
+        }
       `}</style>
 
-      <div className="relative mx-auto max-w-[1400px]">
-        <Swiper
-          effect="coverflow"
-          grabCursor
-          centeredSlides
-          loop={events.length > 2}
-          slidesPerView="auto"
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 0,
-            depth: 150,
-            modifier: 2,
-            slideShadows: false,
-          }}
-          autoplay={{
-            delay: autoplayDelay,
-            disableOnInteraction: false,
-          }}
-          pagination={showPagination ? { clickable: true } : false}
-          navigation={showNavigation ? {
-            nextEl: ".next-btn",
-            prevEl: ".prev-btn",
-          } : false}
-          modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
-          className="mySwiper"
-        >
-          {events.map((event) => (
-            <SwiperSlide key={event.slug}>
-              <div className="relative size-full rounded-[2.5rem] overflow-hidden group border border-white/10 bg-black flex items-center justify-center">
-                {/* Poster Image */}
-                <Image
-                  src={event.poster}
-                  alt={event.name}
-                  fill
-                  className="object-contain transition-opacity duration-1000"
-                />
+        <div className="relative grid gap-7 lg:grid-cols-[460px_1fr] lg:gap-12">
+          <div className="mx-auto w-full max-w-[360px] sm:max-w-[390px] lg:max-w-[460px]">
+            <motion.div
+              className={`relative aspect-[42/59.4] overflow-hidden rounded-[1.7rem] border ${activeTheme.card} bg-white/[0.1] p-2 shadow-[0_24px_70px_rgba(0,0,0,0.5)] backdrop-blur-2xl`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <motion.div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-[1.7rem] border border-white/20"
+                animate={{ opacity: [0.4, 0.72, 0.4] }}
+                transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className={`pointer-events-none absolute -inset-20 bg-gradient-to-br ${activeTheme.glow}`} />
+              <motion.div
+                aria-hidden
+                className="pointer-events-none absolute -left-[62%] top-[-10%] h-[130%] w-[38%] -skew-x-12 bg-gradient-to-r from-transparent via-white/24 to-transparent mix-blend-screen"
+                animate={{ x: ["0%", "225%"] }}
+                transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 1.1, ease: "easeInOut" }}
+              />
 
-                {/* Detail Overlay - Always visible on mobile, hover on desktop */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent lg:opacity-0 lg:group-hover:opacity-100 opacity-100 transition-opacity duration-700 flex flex-col justify-end p-6 md:p-10 text-white">
-                  <div className="space-y-4 lg:translate-y-8 lg:group-hover:translate-y-0 transition-transform duration-700 ease-out">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-blue-600/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg">
-                        Featured Event
-                      </span>
-                    </div>
-
-                    <h3 className="text-2xl md:text-4xl font-black tracking-tighter leading-none italic uppercase">
-                      {event.name}
-                    </h3>
-                    <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium max-w-sm line-clamp-2 md:line-clamp-3">
-                      {event.description}
-                    </p>
-
-                    <div className="flex flex-row flex-wrap gap-4 py-1 text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-slate-400">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="size-3 md:size-4 text-blue-400" />
-                        {event.date}
+              <div className="relative size-full overflow-hidden rounded-[1.5rem] border border-white/18 bg-black/60">
+                <Swiper
+                  slidesPerView={1}
+                  loop={events.length > 1}
+                  autoplay={{ delay: autoplayDelay, disableOnInteraction: false }}
+                  onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+                  onSwiper={(swiper) => setActiveIndex(swiper.realIndex)}
+                  pagination={showPagination ? { clickable: true } : false}
+                  navigation={
+                    showNavigation
+                      ? {
+                          nextEl: ".mindkraft-next-btn",
+                          prevEl: ".mindkraft-prev-btn",
+                        }
+                      : false
+                  }
+                  modules={[Autoplay, Pagination, Navigation]}
+                  className="mindkraft-poster-swiper"
+                >
+                  {events.map((event) => (
+                    <SwiperSlide key={event.slug}>
+                      <div className="relative size-full overflow-hidden rounded-[1.5rem] bg-black/70">
+                        <Image src={event.poster} alt={event.name} fill className="object-cover" priority={safeIndex === 0} />
                       </div>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="size-3 md:size-4 text-blue-400" />
-                        {event.venue}
-                      </div>
-                    </div>
-
-                    <div className="pt-2 md:pt-4">
-                      <Link
-                        href={event.registerUrl}
-                        target="_blank"
-                        className="group/btn inline-flex w-full md:w-auto items-center justify-center gap-3 bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300 shadow-xl"
-                      >
-                        Secure Your Spot
-                        <ArrowUpRight className="size-3 md:size-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Inactive state overlay - floating title */}
-                <div className="absolute top-4 left-10 z-10 opacity-100 group-hover:opacity-0 transition-opacity duration-500">
-                  <div className="glass-card px-4 py-2 rounded-xl border-white/20">
-                    <h4 className="text-white text-lg font-black tracking-tight uppercase italic drop-shadow-md">
-                      {event.name}
-                    </h4>
-                  </div>
-                </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
 
-        {showNavigation && (
-          <>
-            <div className="prev-btn nav-btn left-[-20px] md:left-2 flex items-center justify-center">
-              <ChevronLeft className="size-6 text-white" />
+              {showNavigation && (
+                <>
+                  <div className="mindkraft-prev-btn mindkraft-nav-btn left-2.5 sm:left-3">
+                    <ChevronLeft className="size-4 lg:size-5" />
+                  </div>
+                  <div className="mindkraft-next-btn mindkraft-nav-btn right-2.5 sm:right-3">
+                    <ChevronRight className="size-4 lg:size-5" />
+                  </div>
+                </>
+              )}
+            </motion.div>
+
+            <div className="mt-4 rounded-2xl border border-white/10 bg-black/35 p-3 text-center backdrop-blur-lg">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">Secure your slot</p>
+              <Link
+                href={activeEvent.registerUrl}
+                target="_blank"
+                className={`mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] transition-all duration-300 hover:scale-[1.02] sm:text-sm ${activeTheme.button}`}
+              >
+                Register Now
+                <ArrowUpRight className="size-4" />
+              </Link>
             </div>
-            <div className="next-btn nav-btn right-[-20px] md:right-2 flex items-center justify-center">
-              <ChevronRight className="size-6 text-white" />
-            </div>
-          </>
-        )}
+          </div>
+
+          <div className="relative">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeEvent.slug}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.28, ease: "easeOut" }}
+                className="space-y-4"
+              >
+                <div className={`rounded-2xl border ${activeTheme.card} bg-white/[0.05] p-4 backdrop-blur-xl sm:p-5`}>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${activeTheme.chip}`}>
+                      Featured Event
+                    </span>
+                    <span className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-white/70">
+                      {safeIndex + 1}/{events.length}
+                    </span>
+                  </div>
+
+                  <h3 className="mt-4 text-2xl font-bold uppercase tracking-[-0.02em] text-white sm:text-3xl">{activeEvent.name}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/76 sm:text-[15px]">{activeEvent.description}</p>
+
+                  <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-white/10">
+                    <motion.div
+                      className="h-full rounded-full bg-gradient-to-r from-white via-zinc-200 to-zinc-400"
+                      animate={{ width: `${progress}%` }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: 0.05 }}
+                    className="rounded-2xl border border-white/12 bg-black/30 p-4 backdrop-blur-xl"
+                  >
+                    <p className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/55">
+                      <Calendar className={`size-3.5 ${activeTheme.icon}`} />
+                      Date
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-white/90">{activeEvent.date}</p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: 0.1 }}
+                    className="rounded-2xl border border-white/12 bg-black/30 p-4 backdrop-blur-xl"
+                  >
+                    <p className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/55">
+                      <MapPin className={`size-3.5 ${activeTheme.icon}`} />
+                      Venue
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-white/90">{activeEvent.venue}</p>
+                  </motion.div>
+                </div>
+
+              </motion.div>
+            </AnimatePresence>
+          </div>
       </div>
-    </div>
+    </section>
   );
 };
